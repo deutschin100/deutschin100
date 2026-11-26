@@ -35,7 +35,97 @@
 */
 
 window.CHALLENGES = [
+  {
+    id: "2026-11-27",
+    date: "2026-11-27",
+    title: "Mit Karte, bitte!",
+    subtitle: "8 phrases at the Kasse",
+    cover: "assets/covers/2026-11-27.jpg",
+    reel: "https://www.instagram.com/deutschin100/",
+    questions: [
+      {
+        type: "choose",
+        prompt: "„Brauchen Sie den Bon?“ – you don't want the receipt:",
+        options: ["Nein danke.", "Danke schön!", "Mit Karte, bitte!", "Ja, hier!"],
+        answer: "Nein danke.",
+        tip: "„Bon“ = receipt."
+      },
+      {
+        type: "choose",
+        prompt: "Someone in the queue asks „Möchten Sie vor?“ – what do they mean?",
+        options: ["You can go first.", "Do you need a bag?", "A second checkout just opened.", "Do you collect points?"],
+        answer: "You can go first."
+      },
+      {
+        type: "choose",
+        prompt: "The cashier says „Sie können auflegen.“ What do you do?",
+        options: ["Tap your card now", "Pack your bag", "Show your receipt", "Go to Kasse 2"],
+        answer: "Tap your card now",
+        tip: "„Sie können auflegen.“ = You can tap your card now. Then: just tap & smile 😊"
+      },
+      {
+        type: "gap",
+        prompt: "Fill the gap – the cashier asks:",
+        sentence: "Mit Karte oder ___?",
+        options: ["bar", "Bon", "Tüte"],
+        answer: "bar",
+        tip: "Card or cash? Finally… your moment: „Mit Karte, bitte!“"
+      },
+      {
+        type: "build",
+        prompt: "Build what the cashier asks: “Do you need a bag?”",
+        answer: "Brauchen Sie eine Tüte?",
+        extra: ["einen", "den"],
+        tip: "Quick tip: always put the Warentrenner (the little divider bar) behind your items – Germans notice!"
+      }
+    ]
+  },
 
+  /* ---------- 26 Nov – Wo wohnst du? ---------- */
+  {
+    id: "2026-11-26",
+    date: "2026-11-26",
+    title: "Wo wohnst du?",
+    subtitle: "10 phrases to describe where you live or work",
+    cover: "assets/covers/2026-11-26.jpg",
+    reel: "https://www.instagram.com/deutschin100/",
+    questions: [
+      {
+        type: "choose",
+        prompt: "You live close to the train station. You say…",
+        options: ["Ich wohne in der Nähe vom Bahnhof.", "Ich wohne im Bahnhof.", "Ich wohne nach dem Bahnhof.", "Ich wohne den Bahnhof."],
+        answer: "Ich wohne in der Nähe vom Bahnhof."
+      },
+      {
+        type: "choose",
+        prompt: "What does „Ich wohne am Stadtrand.“ mean?",
+        options: ["I live on the outskirts of town.", "I live in the city centre.", "I live on the main road.", "I live on the second floor."],
+        answer: "I live on the outskirts of town."
+      },
+      {
+        type: "gap",
+        prompt: "Fill the gap",
+        sentence: "Mein Haus ist neben ___ Supermarkt.",
+        options: ["dem", "der", "den"],
+        answer: "dem",
+        tip: "Wo? = a fixed location → Dativ! der Supermarkt → neben dem Supermarkt"
+      },
+      {
+        type: "choose",
+        prompt: "Which sentence means the same as „Mein Büro ist im Stadtzentrum.“?",
+        options: ["Mein Büro liegt im Stadtzentrum.", "Mein Büro wohnt im Stadtzentrum.", "Mein Büro geht im Stadtzentrum.", "Mein Büro hat im Stadtzentrum."],
+        answer: "Mein Büro liegt im Stadtzentrum.",
+        tip: "You can use both: ist = liegt to describe a location."
+      },
+      {
+        type: "build",
+        prompt: "Build: “My office is behind the bank.”",
+        answer: "Mein Büro ist hinter der Bank.",
+        extra: ["dem", "neben"],
+        tip: "die Bank → hinter der Bank (Dativ!)"
+      }
+    ]
+  },
   /* ---------- 16 Nov – Keep a conversation going ---------- */
   {
     id: "2026-11-16",
