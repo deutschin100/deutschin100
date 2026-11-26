@@ -200,7 +200,10 @@ canvas.confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:n
 
   /* ---------- stats (GoatCounter) ---------- */
   // page views: "/" and "/c/<id>" · events: started/<id>, finished/<id>, perfect/<id>, reel-again/<id>, share/<id>
+  var NOTRACK = false;
+  try { NOTRACK = localStorage.getItem("di100_notrack") === "1"; } catch(e){}
   function track(path, title, isEvent){
+    if (NOTRACK) return;                       // your own devices (see #/notrack)
     var tries = 0;
     (function go(){
       try {
@@ -477,8 +480,25 @@ canvas.confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:n
   }
 
   /* ---------- router ---------- */
+  // one "visitor" signal per device per day (= unique daily visitors), plus one when a device visits for the first time
+  function countVisitor(){
+    try {
+      if (localStorage.getItem("di100_seen") !== TODAY){ track("visit/day", "Unique visitor (per day)", true); localStorage.setItem("di100_seen", TODAY); }
+      if (!localStorage.getItem("di100_first")){ track("visit/new", "New visitor (first visit)", true); localStorage.setItem("di100_first", TODAY); }
+    } catch(e){ track("visit/day", "Unique visitor (per day)", true); }
+  }
+
   function route(){
     stopConfetti();
+    // open .../#/notrack once on your own phone/laptop to stop counting yourself (#/track turns it back on)
+    if (location.hash === "#/notrack" || location.hash === "#/track"){
+      var off = location.hash === "#/notrack";
+      try { if (off) localStorage.setItem("di100_notrack", "1"); else localStorage.removeItem("di100_notrack"); } catch(e){}
+      NOTRACK = off;
+      toast(off ? "This device is no longer counted ✓" : "This device is counted again");
+      history.replaceState(null, "", location.pathname);
+      Q = null; renderHome(); return;
+    }
     var m = (location.hash || "").match(/^#\/c\/(.+)$/);
     if (m){ track("/c/" + decodeURIComponent(m[1]), "Challenge " + decodeURIComponent(m[1])); startChallenge(decodeURIComponent(m[1])); }
     else { Q = null; track("/", "Home"); renderHome(); }
@@ -486,6 +506,7 @@ canvas.confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:n
   }
   window.addEventListener("hashchange", route);
   route();
+  countVisitor();
 })();
 </script>
 </body>
