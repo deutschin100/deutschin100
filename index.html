@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deutsch in 100 – Daily Challenge</title>
+<meta name="description" content="Watch the reel, then practise it in 5 quick questions. A new challenge with every Deutsch in 100 reel.">
+<meta name="theme-color" content="#eef3fb">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.png">
+<meta property="og:title" content="Deutsch in 100 – Daily Challenge">
+<meta property="og:description" content="Watch the reel. Practise in 5 questions. Get 5/5!">
+<meta property="og:image" content="assets/logo.png">
+<style>
+@font-face{font-family:"Nunito";font-weight:700;font-display:swap;src:url(assets/fonts/nunito-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Nunito";font-weight:800;font-display:swap;src:url(assets/fonts/nunito-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Nunito";font-weight:900;font-display:swap;src:url(assets/fonts/nunito-latin-900-normal.woff2) format("woff2")}
+:root{
+  --navy:#1d2459; --muted:#6a6f93; --line:#1d2459;
+  --red:#e3262f; --red-d:#a9161d; --yellow:#ffe14d; --yellow-d:#e0b900;
+  --green:#2fae4e; --green-d:#1f8038; --green-bg:#e3f5e1;
+  --wrong:#e3262f; --wrong-bg:#fde4ea;
+  --pink:#f8d3e3; --sun:#fbf0a8; --lav:#e3d9f6; --sky:#d5e7f8;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:800;color:var(--navy);
+  background:linear-gradient(180deg,#eef3fb 0%,#f6f2fa 55%,#fbf1f4 100%) fixed;-webkit-font-smoothing:antialiased;transition:background .4s}
+a{color:inherit}
+
+/* pastel circles like the reels */
+.blobs{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.blobs i{position:absolute;border-radius:50%;opacity:.7}
+.blobs i:nth-child(1){width:260px;height:260px;background:var(--pink);top:-70px;left:-90px}
+.blobs i:nth-child(2){width:230px;height:230px;background:var(--sun);top:120px;right:-110px}
+.blobs i:nth-child(3){width:300px;height:300px;background:var(--lav);bottom:-60px;left:-130px}
+.blobs i:nth-child(4){width:220px;height:220px;background:var(--sky);bottom:-40px;right:-70px}
+body.tint .blobs i{opacity:.45}
+
+#app{position:relative;z-index:1;max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:0 18px}
+
+/* highlighter like the reels */
+.hl{background:linear-gradient(transparent 52%,var(--yellow) 52%, var(--yellow) 92%, transparent 92%);padding:0 3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:19px;text-decoration:none;letter-spacing:-.2px}
+.brand img{width:44px;height:44px;border-radius:50%;box-shadow:0 2px 0 rgba(29,36,89,.15)}
+.pill{display:inline-flex;gap:6px;align-items:center;font-weight:900;background:#fff;border:2.5px solid var(--line);border-radius:999px;padding:5px 13px;font-size:15px}
+
+/* buttons */
+.btn{display:block;width:100%;text-align:center;text-decoration:none;border:2.5px solid var(--navy);border-radius:999px;padding:14px 16px;font:inherit;font-size:18px;font-weight:900;color:#fff;background:var(--red);box-shadow:0 5px 0 var(--navy);cursor:pointer;transition:transform .06s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--navy)}
+.btn:disabled{background:#d9d7e2;color:#fff;border-color:#b9b6c9;box-shadow:0 5px 0 #b9b6c9;cursor:default}
+.btn:disabled:active{transform:none}
+.btn.navy{background:var(--navy)}
+.btn.green{background:var(--green)}
+.btn.yellow{background:var(--yellow);color:var(--navy)}
+.btn.white{background:#fff;color:var(--navy)}
+.btn + .btn{margin-top:14px}
+
+/* speech-bubble tag (red title bubble in the reels) */
+.bubble{position:relative;display:inline-block;background:var(--red);color:#fff;font-weight:900;font-size:16px;padding:8px 18px;border-radius:14px;border:2.5px solid var(--navy)}
+.bubble:after{content:"";position:absolute;left:22px;bottom:-11px;width:16px;height:16px;background:var(--red);border-right:2.5px solid var(--navy);border-bottom:2.5px solid var(--navy);transform:rotate(45deg)}
+.tag{display:inline-block;font-size:12px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;border-radius:999px;padding:4px 12px}
+.tag.tip{background:var(--yellow);color:var(--navy)}
+.tag.rem{background:#e4377d;color:#fff}
+
+/* home hero */
+.hero{text-align:center;padding:8px 0 4px}
+.cover{position:relative;display:block;width:172px;margin:22px auto 16px;border-radius:22px;overflow:hidden;border:3px solid var(--navy);box-shadow:0 6px 0 var(--navy);aspect-ratio:9/16;background:#fff}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.play{position:absolute;right:10px;bottom:10px;width:40px;height:40px;border-radius:50%;background:#fff;border:2.5px solid var(--navy);display:grid;place-items:center;font-size:15px}
+.hero h1{font-size:27px;line-height:1.15;margin:0 0 4px;font-weight:900;letter-spacing:-.4px}
+.hero .sub{margin:0 0 18px;color:var(--muted);font-size:16px;font-weight:800}
+.status{display:inline-block;margin:0 0 18px;font-size:15px}
+.reel-link{display:inline-block;margin-top:16px;font-weight:900;font-size:15px;color:var(--navy);text-decoration:none;border-bottom:2.5px solid var(--yellow)}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:26px 0 6px}
+.stats div{background:#fff;border:2.5px solid var(--line);border-radius:18px;padding:10px 4px;text-align:center}
+.stats b{display:block;font-size:20px;font-weight:900}
+.stats span{font-size:12px;color:var(--muted)}
+
+.section{font-size:20px;font-weight:900;margin:28px 0 12px}
+.list{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:14px;background:#fff;border:2.5px solid var(--line);border-radius:20px;padding:10px 14px 10px 10px;text-decoration:none;box-shadow:0 4px 0 var(--line)}
+.row:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.thumb{width:50px;aspect-ratio:9/16;border-radius:10px;overflow:hidden;border:2px solid var(--navy);flex:none;background:#eee}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.row-main{flex:1;min-width:0}
+.row-main b{display:block;font-size:16px;font-weight:900;line-height:1.2}
+.row-main small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.badge{font-size:13px;font-weight:900;border-radius:999px;padding:5px 10px;white-space:nowrap;border:2px solid var(--navy)}
+.badge.done{background:var(--green);color:#fff}
+.badge.part{background:var(--yellow)}
+.badge.new{background:#fff}
+
+.foot{text-align:center;padding:34px 0 30px;margin-top:auto}
+.foot img{width:84px;height:84px;border-radius:50%}
+.foot p{margin:6px 0 12px;color:var(--muted)}
+.ig{display:inline-flex;gap:8px;align-items:center;background:var(--red);color:#fff;text-decoration:none;font-weight:900;padding:10px 20px;border-radius:999px;border:2.5px solid var(--navy);box-shadow:0 4px 0 var(--navy)}
+.empty{text-align:center;color:var(--muted);padding:60px 10px}
+
+/* quiz */
+.quiz{flex:1;padding-bottom:18px}
+.qtop{display:flex;align-items:center;gap:10px;padding:16px 0 8px}
+.close{font-size:22px;text-decoration:none;color:var(--muted);width:30px;font-weight:900}
+.dots{flex:1;display:flex;justify-content:center;gap:8px}
+.dot{width:26px;height:26px;border-radius:50%;border:2.5px solid var(--navy);background:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;color:var(--navy)}
+.dot.on{color:#fff}
+.dot.now{transform:scale(1.18)}
+.numwrap{text-align:center;margin:18px 0 6px}
+.num{display:inline-grid;place-items:center;width:74px;height:74px;border-radius:50%;color:#fff;font-size:40px;font-weight:900;border:3px solid var(--navy);box-shadow:inset 0 0 0 5px #fff}
+.qkind{text-align:center;font-size:13px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.prompt{text-align:center;font-size:23px;line-height:1.3;margin:6px 0 22px;font-weight:900;letter-spacing:-.3px}
+.opts{display:flex;flex-direction:column;gap:12px}
+.opt{display:flex;align-items:center;gap:12px;font:inherit;font-size:17px;font-weight:800;text-align:left;background:#fff;color:var(--navy);border:2.5px solid var(--navy);border-radius:18px;padding:14px 16px;box-shadow:0 4px 0 var(--navy);cursor:pointer;transition:transform .06s}
+.opt:active{transform:translateY(3px);box-shadow:0 1px 0 var(--navy)}
+.opt .mk{flex:none;width:24px;height:24px;border-radius:50%;border:2.5px solid var(--navy);display:grid;place-items:center;font-size:13px;color:#fff}
+.opt.sel{background:#fff7c2}
+.opt.sel .mk{background:var(--navy)}
+.opt.right{background:var(--green-bg);border-color:var(--green);box-shadow:0 4px 0 var(--green-d)}
+.opt.right .mk{background:var(--green);border-color:var(--green)}
+.opt.wrong{background:var(--wrong-bg);border-color:var(--wrong);box-shadow:0 4px 0 var(--red-d)}
+.opt.wrong .mk{background:var(--wrong);border-color:var(--wrong)}
+.opt.wrong span.t{text-decoration:line-through}
+.opt:disabled{cursor:default}
+.opt:disabled:active{transform:none}
+.gap-sentence{text-align:center;font-size:23px;font-weight:900;background:#fff;border:2.5px solid var(--navy);border-radius:20px;padding:18px 14px;margin-bottom:20px;line-height:1.55}
+.blank{display:inline-block;min-width:80px;background:var(--yellow);border-radius:8px;padding:0 8px;color:var(--navy)}
+.blank.empty{background:#fff4b8;color:transparent}
+.build-line{min-height:122px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;justify-content:center;margin-bottom:24px;padding:12px;background:#fff;border:2.5px dashed rgba(29,36,89,.35);border-radius:20px}
+.bank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tile{font:inherit;font-size:18px;font-weight:900;background:#fff;color:var(--navy);border:2.5px solid var(--navy);border-radius:14px;padding:8px 14px;box-shadow:0 4px 0 var(--navy);cursor:pointer}
+.tile:active{transform:translateY(3px);box-shadow:0 1px 0 var(--navy)}
+.build-line .tile{background:#fff7c2}
+.tile.used{visibility:hidden}
+.tile:disabled{cursor:default}
+
+.dock{position:sticky;bottom:0;margin:0 -18px;padding:14px 18px calc(18px + env(safe-area-inset-bottom));background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:2.5px solid var(--navy)}
+.dock.ok{background:var(--green-bg)}
+.dock.bad{background:var(--wrong-bg)}
+.fb{margin-bottom:14px}
+.fb .head{font-size:21px;font-weight:900}
+.dock.ok .head{color:var(--green-d)}
+.dock.bad .head{color:var(--red-d)}
+.fb p{margin:6px 0 0;font-size:15px;line-height:1.4}
+.fb .tag{margin-top:8px}
+
+/* result */
+.result{flex:1;text-align:center;padding:4px 0 10px}
+.char{display:block;height:190px;margin:10px auto 0}
+.result h1{font-size:36px;margin:8px 0 6px;font-weight:900;letter-spacing:-.5px}
+.result .lead{color:var(--muted);font-size:16px;margin:0 0 18px;line-height:1.4}
+.score{display:inline-block;font-weight:900;font-size:18px;background:#fff;border:2.5px solid var(--navy);border-radius:999px;padding:7px 18px;margin-bottom:22px}
+.turn{background:#fff;border:2.5px solid var(--navy);border-radius:22px;padding:16px;margin:0 0 22px}
+.turn h2{margin:0 0 6px;font-size:24px;font-weight:900}
+.turn p{margin:0 0 14px;color:var(--muted);font-size:15px}
+.review{text-align:left;margin:0 0 24px}
+.review .card{background:#fff;border:2.5px solid var(--navy);border-radius:18px;padding:12px 14px;margin-bottom:10px}
+.review small{display:block;color:var(--muted);font-size:13px;margin-bottom:8px}
+.ans{display:flex;align-items:center;gap:8px;border-radius:12px;padding:6px 10px;font-size:16px;margin-top:6px;border:2px solid}
+.ans.good{border-color:var(--green);background:var(--green-bg)}
+.ans.bad{border-color:var(--wrong);background:var(--wrong-bg);text-decoration:line-through;color:#8a2a3a}
+.ans i{font-style:normal;flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;text-decoration:none}
+.ans.good i{background:var(--green)} .ans.bad i{background:var(--wrong)}
+.textlink{display:inline-block;margin-top:20px;color:var(--muted);font-weight:900;text-decoration:none}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:999px;font-weight:900;font-size:14px;z-index:20}
+canvas.confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:10}
+@media (min-height:800px){ .cover{width:190px} }
+</style>
+</head>
+<body>
+<div class="blobs"><i></i><i></i><i></i><i></i></div>
+<div id="app"></div>
+<script src="challenges.js"></script>
+<script>
+(function(){
+  "use strict";
+  var INSTAGRAM = "https://www.instagram.com/deutschin100/";
+  var KEY = "di100_progress_v1";
+  // colours of the numbered dots in the reels, and the matching pastel backgrounds
+  var COLORS = ["#e3262f", "#f0891d", "#2fae4e", "#2f6fe0", "#8a3fd1"];
+  var TINTS  = ["#fde3ea", "#fdead6", "#e2f4df", "#dfeafb", "#ebe2fa"];
+  var DATA = (window.CHALLENGES || []).slice();
+  var app = document.getElementById("app");
+
+  /* ---------- helpers ---------- */
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(ch){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]; }); }
+  function shuffle(a){ a = a.slice(); for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
+  function dayStr(d){ return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  var TODAY = dayStr(new Date());
+  function fmtDate(s){ var p = s.split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]).toLocaleDateString("en-GB", {weekday:"short", day:"numeric", month:"short"}); }
+  function setTint(c){ document.body.style.background = c || ""; document.body.classList.toggle("tint", !!c); }
+
+  /* ---------- progress (saved in this browser) ---------- */
+  function load(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ return {}; } }
+  var P = load(); P.c = P.c || {}; P.days = P.days || [];
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch(e){} }
+
+  function streak(){
+    var set = {}; P.days.forEach(function(d){ set[d] = 1; });
+    var d = new Date(), n = 0;
+    if (!set[dayStr(d)]) { d.setDate(d.getDate() - 1); if (!set[dayStr(d)]) return 0; }
+    while (set[dayStr(d)]) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function available(){
+    return DATA.filter(function(c){ return c.date <= TODAY; })
+               .sort(function(a, b){ return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+  }
+
+  // sanity check for whoever edits challenges.js (see the browser console)
+  DATA.forEach(function(c){ (c.questions || []).forEach(function(q, i){
+    if (q.type !== "build" && (q.options || []).indexOf(q.answer) < 0)
+      console.warn("Challenge " + c.id + ", question " + (i + 1) + ": answer is not one of the options");
+  }); });
+
+  /* ---------- home ---------- */
+  function header(){
+    return '<header class="top"><a class="brand" href="#/"><img src="assets/logo.png" alt="">Deutsch in 100</a>' +
+           '<span class="pill">🔥 ' + streak() + '</span></header>';
+  }
+  function badge(c){
+    var p = P.c[c.id], n = c.questions.length;
+    if (!p) return '<span class="badge new">New</span>';
+    if (p.solved) return '<span class="badge done">✓ ' + n + '/' + n + '</span>';
+    return '<span class="badge part">' + p.best + '/' + n + '</span>';
+  }
+  function thumb(c){ return '<span class="thumb">' + (c.cover ? '<img src="' + esc(c.cover) + '" alt="" loading="lazy">' : '') + '</span>'; }
+  function row(c){
+    return '<a class="row" href="#/c/' + encodeURIComponent(c.id) + '">' + thumb(c) +
+           '<span class="row-main"><b>' + esc(c.title) + '</b><small>' + esc(c.subtitle || "") + ' · ' + fmtDate(c.date) + '</small></span>' + badge(c) + '</a>';
+  }
+  function renderHome(){
+    setTint(null);
+    var list = available();
+    var solved = list.filter(function(c){ return P.c[c.id] && P.c[c.id].solved; }).length;
+    if (!list.length){ app.innerHTML = header() + '<div class="empty">No challenge yet – check back after today\'s reel!</div>'; return; }
+    var t = list[0], rest = list.slice(1), isToday = t.date === TODAY, p = P.c[t.id], n = t.questions.length;
+    var status = !p ? n + " questions · about 2 minutes"
+               : p.solved ? "✅ Solved – " + n + "/" + n
+               : "Best so far: " + p.best + "/" + n + " – go for " + n + "/" + n + "!";
+    var cover = t.cover ? '<a class="cover" href="' + esc(t.reel || INSTAGRAM) + '" target="_blank" rel="noopener"><img src="' + esc(t.cover) + '" alt="Reel cover"><span class="play">▶</span></a>' : '';
+    app.innerHTML = header() +
+      '<section class="hero">' +
+        '<span class="bubble">' + (isToday ? "Today's challenge" : "Latest challenge") + '</span>' +
+        cover +
+        '<h1><span class="hl">' + esc(t.title) + '</span></h1>' +
+        '<p class="sub">' + esc(t.subtitle || "") + '</p>' +
+        '<span class="status">' + status + '</span>' +
+        '<a class="btn" href="#/c/' + encodeURIComponent(t.id) + '">' + (p && p.solved ? "Play again" : p ? "Try again" : "Start the challenge") + '</a>' +
+        (t.reel ? '<a class="reel-link" href="' + esc(t.reel) + '" target="_blank" rel="noopener">▶ Watch the reel first</a>' : '') +
+      '</section>' +
+      '<div class="stats"><div><b>🔥 ' + streak() + '</b><span>day streak</span></div>' +
+        '<div><b>⭐ ' + solved + '</b><span>solved</span></div>' +
+        '<div><b>📚 ' + list.length + '</b><span>challenges</span></div></div>' +
+      (rest.length ? '<h2 class="section">Earlier <span class="hl">challenges</span></h2><div class="list">' + rest.map(row).join("") + '</div>' : '') +
+      '<footer class="foot"><img src="assets/logo.png" alt="Deutsch in 100"><p>A new challenge with every reel</p>' +
+        '<a class="ig" href="' + INSTAGRAM + '" target="_blank" rel="noopener">Follow @deutschin100</a></footer>';
+  }
+
+  /* ---------- quiz ---------- */
+  var Q = null;
+  var KIND = { choose: "Choose the right answer", gap: "Fill the gap", build: "Build the sentence" };
+
+  function startChallenge(id){
+    var c = available().filter(function(x){ return x.id === id; })[0];
+    if (!c){ location.hash = "#/"; return; }
+    Q = { c: c, i: 0, results: [] };
+    renderQuestion();
+  }
+
+  function gapHtml(sentence, fill){
+    return sentence.split("___").map(esc).join('<span class="blank' + (fill ? '' : ' empty') + '" id="blank">' + (fill ? esc(fill) : "____") + '</span>');
+  }
+
+  function dotsHtml(i, n){
+    var s = "";
+    for (var k = 0; k < n; k++){
+      var col = COLORS[k % COLORS.length], on = k <= i;
+      s += '<span class="dot' + (on ? ' on' : '') + (k === i ? ' now' : '') + '"' + (on ? ' style="background:' + col + '"' : '') + '>' + (k + 1) + '</span>';
+    }
+    return s;
+  }
+
+  function renderQuestion(){
+    var c = Q.c, i = Q.i, q = c.questions[i], n = c.questions.length, body = "";
+    var col = COLORS[i % COLORS.length];
+    setTint(TINTS[i % TINTS.length]);
+    Q.sel = null; Q.checked = false;
+    if (q.type === "build"){
+      var tokens = norm(q.answer).split(" ").concat(q.extra || []);
+      Q.bank = shuffle(tokens.map(function(t, k){ return { t: t, k: k }; }));
+      Q.picked = [];
+      body = '<div class="build-line" id="line"></div><div class="bank" id="bank"></div>';
+    } else {
+      Q.opts = shuffle(q.options);
+      body = (q.type === "gap" ? '<div class="gap-sentence">' + gapHtml(q.sentence, null) + '</div>' : '') +
+             '<div class="opts">' + Q.opts.map(function(o, k){ return '<button class="opt" data-k="' + k + '"><span class="mk"></span><span class="t">' + esc(o) + '</span></button>'; }).join("") + '</div>';
+    }
+    app.innerHTML =
+      '<div class="quiz">' +
+        '<div class="qtop"><a class="close" href="#/" aria-label="Close">✕</a><div class="dots">' + dotsHtml(i, n) + '</div><span style="width:30px"></span></div>' +
+        '<div class="numwrap"><span class="num" style="background:' + col + '">' + (i + 1) + '</span></div>' +
+        '<div class="qkind">' + (KIND[q.type] || "") + '</div>' +
+        '<h2 class="prompt">' + esc(q.prompt) + '</h2>' + body +
+      '</div>' +
+      '<div class="dock" id="dock"><button class="btn navy" id="check" disabled>Check</button></div>';
+
+    var checkBtn = document.getElementById("check");
+    checkBtn.onclick = onCheck;
+
+    if (q.type === "build"){ drawTiles(); return; }
+    app.querySelectorAll(".opt").forEach(function(b){
+      b.onclick = function(){
+        if (Q.checked) return;
+        app.querySelectorAll(".opt").forEach(function(x){ x.classList.remove("sel"); });
+        b.classList.add("sel");
+        Q.sel = Q.opts[+b.dataset.k];
+        if (q.type === "gap"){ var bl = document.getElementById("blank"); bl.textContent = Q.sel; bl.classList.remove("empty"); }
+        checkBtn.disabled = false;
+      };
+    });
+  }
+
+  function drawTiles(){
+    var line = document.getElementById("line"), bank = document.getElementById("bank");
+    var usedKeys = Q.picked.map(function(p){ return p.k; });
+    line.innerHTML = Q.picked.map(function(p, idx){ return '<button class="tile" data-i="' + idx + '">' + esc(p.t) + '</button>'; }).join("");
+    bank.innerHTML = Q.bank.map(function(p, idx){ return '<button class="tile' + (usedKeys.indexOf(p.k) >= 0 ? ' used' : '') + '" data-b="' + idx + '">' + esc(p.t) + '</button>'; }).join("");
+    line.querySelectorAll(".tile").forEach(function(b){
+      b.disabled = Q.checked;
+      b.onclick = function(){ Q.picked.splice(+b.dataset.i, 1); drawTiles(); };
+    });
+    bank.querySelectorAll(".tile").forEach(function(b){
+      b.disabled = Q.checked;
+      b.onclick = function(){ var t = Q.bank[+b.dataset.b]; if (usedKeys.indexOf(t.k) < 0){ Q.picked.push(t); drawTiles(); } };
+    });
+    var cb = document.getElementById("check");
+    if (cb && !Q.checked) cb.disabled = Q.picked.length === 0;
+  }
+
+  function onCheck(){
+    var q = Q.c.questions[Q.i], given, ok;
+    if (q.type === "build"){
+      given = Q.picked.map(function(p){ return p.t; }).join(" ");
+      ok = norm(given) === norm(q.answer);
+    } else {
+      given = Q.sel;
+      ok = given === q.answer;
+      app.querySelectorAll(".opt").forEach(function(b){
+        var o = Q.opts[+b.dataset.k], mk = b.querySelector(".mk");
+        b.disabled = true; b.classList.remove("sel");
+        if (o === q.answer){ b.classList.add("right"); mk.textContent = "✓"; }
+        else if (o === given){ b.classList.add("wrong"); mk.textContent = "✕"; }
+      });
+    }
+    Q.checked = true;
+    if (q.type === "build") drawTiles();
+    Q.results.push({ q: q, ok: ok, given: given });
+
+    var dock = document.getElementById("dock");
+    dock.className = "dock " + (ok ? "ok" : "bad");
+    var last = Q.i === Q.c.questions.length - 1;
+    dock.innerHTML =
+      '<div class="fb">' + (ok ? '<div class="head">✓ Richtig!</div>' : '<div class="head">✕ Nicht ganz…</div><p>Correct: <b>' + esc(q.answer) + '</b></p>') +
+      (q.tip ? '<span class="tag tip">Quick tip</span><p>' + esc(q.tip) + '</p>' : '') + '</div>' +
+      '<button class="btn ' + (ok ? 'green' : '') + '" id="next">' + (last ? "See my result" : "Weiter →") + '</button>';
+    document.getElementById("next").onclick = function(){
+      Q.i++;
+      if (Q.i < Q.c.questions.length) { renderQuestion(); window.scrollTo(0, 0); }
+      else renderResult();
+    };
+  }
+
+  /* ---------- result ---------- */
+  function renderResult(){
+    setTint(null);
+    var c = Q.c, n = c.questions.length;
+    var score = Q.results.filter(function(r){ return r.ok; }).length;
+    var perfect = score === n;
+    var p = P.c[c.id] || { best: 0, attempts: 0 };
+    p.attempts++; p.best = Math.max(p.best, score);
+    if (perfect){ p.solved = true; p.solvedOn = p.solvedOn || TODAY; if (P.days.indexOf(TODAY) < 0) P.days.push(TODAY); }
+    P.c[c.id] = p; save();
+    window.scrollTo(0, 0);
+
+    if (perfect){
+      app.innerHTML = header() +
+        '<section class="result">' +
+          '<img class="char" src="assets/char-happy.png" alt="">' +
+          '<h1><span class="hl">Perfekt!</span></h1>' +
+          '<p class="lead">You nailed „' + esc(c.title.replace(/[„“]/g, "")) + '“</p>' +
+          '<div class="score">' + score + '/' + n + ' · 🔥 ' + streak() + ' day streak</div>' +
+          '<div class="turn"><h2>Now it\'s <span class="hl">your turn!</span></h2><p>Use one phrase from this reel today – and tell us which one in the comments.</p>' +
+            (c.reel ? '<a class="btn yellow" href="' + esc(c.reel) + '" target="_blank" rel="noopener">💬 Comment on the reel</a>' : '') + '</div>' +
+          '<button class="btn navy" id="share">Challenge a friend</button>' +
+          '<a class="btn white" href="#/">Back to challenges</a>' +
+        '</section>';
+      document.getElementById("share").onclick = function(){ share(c, score, n); };
+      confetti();
+    } else {
+      var wrong = Q.results.filter(function(r){ return !r.ok; });
+      app.innerHTML = header() +
+        '<section class="result">' +
+          '<img class="char" src="assets/char-think.png" alt="">' +
+          '<h1><span class="hl">' + (score >= n - 1 ? "Fast geschafft!" : "Weiter üben!") + '</span></h1>' +
+          '<p class="lead">Watch the reel once more,<br>then come back and go for ' + n + '/' + n + '.</p>' +
+          '<div class="score">' + score + '/' + n + '</div>' +
+          '<div class="review"><span class="tag rem">Remember</span><div style="height:10px"></div>' + wrong.map(function(r){
+            return '<div class="card"><small>' + esc(r.q.prompt) + '</small>' +
+              '<div class="ans good"><i>✓</i>' + esc(r.q.answer) + '</div>' +
+              (r.given ? '<div class="ans bad"><i>✕</i>' + esc(r.given) + '</div>' : '') + '</div>';
+          }).join("") + '</div>' +
+          (c.reel ? '<a class="btn yellow" href="' + esc(c.reel) + '" target="_blank" rel="noopener">▶ Watch the reel again</a>' : '') +
+          '<button class="btn" id="retry">Try again</button>' +
+          '<a class="textlink" href="#/">Back to challenges</a>' +
+        '</section>';
+      document.getElementById("retry").onclick = function(){ startChallenge(c.id); window.scrollTo(0, 0); };
+    }
+  }
+
+  function share(c, score, n){
+    var url = location.href.split("#")[0] + "#/c/" + encodeURIComponent(c.id);
+    var text = "I got " + score + "/" + n + " on the Deutsch in 100 challenge: " + c.title + " 🇩🇪 Can you?";
+    if (navigator.share) navigator.share({ title: "Deutsch in 100", text: text, url: url }).catch(function(){});
+    else if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(function(){ toast("Link copied!"); }, function(){});
+  }
+  function toast(msg){
+    var t = document.createElement("div"); t.className = "toast"; t.textContent = msg;
+    document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 1800);
+  }
+
+  /* ---------- confetti in the reel colours ---------- */
+  var raf = null;
+  function stopConfetti(){ if (raf) cancelAnimationFrame(raf); raf = null; document.querySelectorAll("canvas.confetti").forEach(function(c){ c.remove(); }); }
+  function confetti(){
+    stopConfetti();
+    var cv = document.createElement("canvas"); cv.className = "confetti"; document.body.appendChild(cv);
+    var dpr = window.devicePixelRatio || 1, W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr, ctx = cv.getContext("2d");
+    var cols = COLORS.concat(["#ffe14d", "#1d2459"]);
+    var ps = Array.from({ length: 150 }, function(){ return {
+      x: Math.random() * W, y: -Math.random() * H * 0.6, vx: (Math.random() - 0.5) * 4 * dpr, vy: (2 + Math.random() * 4) * dpr,
+      s: (6 + Math.random() * 7) * dpr, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.3, c: cols[Math.floor(Math.random() * cols.length)] }; });
+    var t0 = performance.now();
+    function frame(t){
+      ctx.clearRect(0, 0, W, H);
+      ps.forEach(function(p){ p.x += p.vx; p.y += p.vy; p.vy += 0.05 * dpr; p.r += p.vr;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore(); });
+      if (t - t0 < 3500) raf = requestAnimationFrame(frame); else stopConfetti();
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  /* ---------- router ---------- */
+  function route(){
+    stopConfetti();
+    var m = (location.hash || "").match(/^#\/c\/(.+)$/);
+    if (m) startChallenge(decodeURIComponent(m[1]));
+    else { Q = null; renderHome(); }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  route();
+})();
+</script>
+</body>
+</html>
