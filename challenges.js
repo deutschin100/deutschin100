@@ -2,7 +2,8 @@
   DEUTSCH IN 100 – DAILY CHALLENGES
   =================================
   One block per reel. The order doesn't matter – the app sorts by date.
-  A challenge only appears once its date has arrived, so you can prepare days ahead.
+  A challenge unlocks on its date at 16:30 German time (same moment worldwide), so you can prepare days ahead.
+  Different time for one challenge? Add  time: "18:00",  next to date.
 
   cover: the reel's title frame, saved in assets/covers/ (portrait 9:16, ~430 px wide is plenty)
   reel:  Instagram → reel → Share → Copy link
