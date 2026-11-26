@@ -195,6 +195,18 @@ canvas.confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:n
   function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
   function dayStr(d){ return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   var TODAY = dayStr(new Date());
+
+  /* ---------- release time (German time, same moment for everyone) ---------- */
+  var RELEASE_TIME = "16:30";   // default: reels go out at 16:30. A challenge can override it with  time: "18:00"
+  function berlinNow(){
+    try {
+      var o = {};
+      new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+        .formatToParts(new Date()).forEach(function(x){ o[x.type] = x.value; });
+      return o.year + "-" + o.month + "-" + o.day + " " + o.hour + ":" + o.minute;
+    } catch(e){ var d = new Date(); return dayStr(d) + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+  }
+  function releaseOf(c){ return c.date + " " + (c.time || RELEASE_TIME); }
   function fmtDate(s){ var p = s.split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]).toLocaleDateString("en-GB", {weekday:"short", day:"numeric", month:"short"}); }
   function setTint(c){ document.body.style.background = c || ""; document.body.classList.toggle("tint", !!c); }
 
@@ -226,7 +238,8 @@ canvas.confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:n
     return n;
   }
   function available(){
-    return DATA.filter(function(c){ return c.date <= TODAY; })
+    var now = berlinNow();
+    return DATA.filter(function(c){ return releaseOf(c) <= now; })
                .sort(function(a, b){ return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
   }
 
@@ -257,7 +270,7 @@ canvas.confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:n
     var list = available();
     var solved = list.filter(function(c){ return P.c[c.id] && P.c[c.id].solved; }).length;
     if (!list.length){ app.innerHTML = header() + '<div class="empty">No challenge yet – check back after today\'s reel!</div>'; return; }
-    var t = list[0], rest = list.slice(1), isToday = t.date === TODAY, p = P.c[t.id], n = t.questions.length;
+    var t = list[0], rest = list.slice(1), isToday = t.date === berlinNow().slice(0, 10), p = P.c[t.id], n = t.questions.length;
     var status = !p ? n + " questions · about 2 minutes"
                : p.solved ? "✅ Solved – " + n + "/" + n
                : "Best so far: " + p.best + "/" + n + " – go for " + n + "/" + n + "!";
